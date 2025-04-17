@@ -42,6 +42,8 @@ class ActorCritic(nn.Module):
         for i in range(1, len(hiddens_value)):
             value_layers.append(nn.ReLU())
             value_layers.append(nn.Linear(hiddens_value[i - 1], hiddens_value[i]))
+        value_layers.append(nn.ReLU())
+        value_layers.append(nn.Linear(hiddens[-1], 1))
         for layer in value_layers:
             layer_init(layer)
 
@@ -113,6 +115,8 @@ class ContinuousActorCritic(nn.Module):
         for i in range(1, len(hiddens_value)):
             value_layers.append(nn.ReLU())
             value_layers.append(nn.Linear(hiddens_value[i - 1], hiddens_value[i]))
+        value_layers.append(nn.ReLU())
+        value_layers.append(nn.Linear(hiddens[-1], 1))
         for layer in value_layers:
             layer_init(layer)
         
