@@ -114,8 +114,8 @@ class ContinuousActorCritic(nn.Module):
         #value network
 
         value_layers = []
-        value_layers.append(nn.Linear(state_dim, hiddens_value[0]))
         hiddens_value = [512, 128, 32, 1]
+        value_layers.append(nn.Linear(state_dim, hiddens_value[0]))
         for i in range(1, len(hiddens_value)):
             value_layers.append(nn.ReLU())
             value_layers.append(nn.Linear(hiddens_value[i - 1], hiddens_value[i]))
