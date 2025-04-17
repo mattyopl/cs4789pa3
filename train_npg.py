@@ -66,6 +66,23 @@ def train(N, T, delta, lamb=1e-3):
     for t in range(T):
         print(f"Iteration {t}")
         # TODO Update theta according to handout, and record rewards
+        grads, rewards = sample(theta, env, N) # sample trajs
+        fisher = npg_utils.compute_fisher_matrix(grads, lamb) # get the fisher
+        v_grad = npg_utils.compute_value_gradient(grads, rewards) # get the v
+        eta = npg_utils.compute_eta(delta, fisher, v_grad) #compute eta
+
+        # Natural Gradient Step: theta = theta + eta * F^(-1) * deltaV
+        try:
+            nat_grad = np.linalg.solve(fisher, v_grad)  # more stable than inv
+        except np.linalg.LinAlgError:
+            nat_grad = np.zeros_like(theta)
+
+        theta += eta * nat_grad
+
+        # Record average reward for this iteration
+        avg_reward = np.mean([sum(r) for r in rewards])
+        episode_rewards.append(avg_reward)
+        print(f"  Avg reward: {avg_reward:.2f} | Step size: {eta:.5f}")
 
     return theta, episode_rewards
 
