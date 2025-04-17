@@ -1,0 +1,18 @@
+# the hyperparameters you don't add will use the default values from train(...) in ppo.py
+
+CartPole-v0:
+  epochs: 170
+  gamma: 0.98
+  gae_lambda: 0.9
+  lr: 0.0003
+  num_steps: 256
+  minibatch_size: 64
+  ent_coef: 0.01
+  clip_ratio: 0.2
+  vf_coef: 0.5
+  update_epochs: 3
+  seed: 42
+
+LunarLander-v2:
+
+Reacher-v4:
