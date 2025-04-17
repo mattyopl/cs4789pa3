@@ -43,7 +43,7 @@ class ActorCritic(nn.Module):
             value_layers.append(nn.ReLU())
             value_layers.append(nn.Linear(hiddens_value[i - 1], hiddens_value[i]))
         value_layers.append(nn.ReLU())
-        value_layers.append(nn.Linear(hiddens[-1], 1))
+        value_layers.append(nn.Linear(hiddens_value[-1], 1))
         for layer in value_layers:
             layer_init(layer)
 
@@ -79,6 +79,7 @@ class ActorCritic(nn.Module):
 
         :param state: 
         """
+        print(state)
         return self.value_network(state).squeeze(-1)
 
 class ContinuousActorCritic(nn.Module):
@@ -116,7 +117,7 @@ class ContinuousActorCritic(nn.Module):
             value_layers.append(nn.ReLU())
             value_layers.append(nn.Linear(hiddens_value[i - 1], hiddens_value[i]))
         value_layers.append(nn.ReLU())
-        value_layers.append(nn.Linear(hiddens[-1], 1))
+        value_layers.append(nn.Linear(hiddens_value[-1], 1))
         for layer in value_layers:
             layer_init(layer)
         
