@@ -37,7 +37,7 @@ class ActorCritic(nn.Module):
 
         #value network
         value_layers = []
-        hiddens_value = [512, 128, 32]
+        hiddens_value = [512, 128, 32, 1]
         value_layers.append(nn.Linear(state_dim, hiddens_value[0]))
         for i in range(1, len(hiddens_value)):
             value_layers.append(nn.ReLU())
@@ -77,7 +77,7 @@ class ActorCritic(nn.Module):
 
         :param state: 
         """
-        return self.value_network(state)
+        return self.value_network(state).squeeze(-1)
 
 class ContinuousActorCritic(nn.Module):
 
@@ -109,7 +109,7 @@ class ContinuousActorCritic(nn.Module):
 
         value_layers = []
         value_layers.append(nn.Linear(state_dim, hiddens_value[0]))
-        hiddens_value = [512, 128, 32]
+        hiddens_value = [512, 128, 32, 1]
         for i in range(1, len(hiddens_value)):
             value_layers.append(nn.ReLU())
             value_layers.append(nn.Linear(hiddens_value[i - 1], hiddens_value[i]))
@@ -142,7 +142,7 @@ class ContinuousActorCritic(nn.Module):
     
     @torch.no_grad
     def value(self, state):
-        return self.value_network(state)
+        return self.value_network(state).squeeze(-1)
     
 
 

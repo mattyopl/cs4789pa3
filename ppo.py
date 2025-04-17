@@ -142,7 +142,7 @@ def train(
 
     for iteration in tqdm(range(1, epochs + 1)):
         # TODO: Collect num_steps transitions from env and fill in the tensors for states, actions, ....
-        for t in range(num_steps): #iterating over the num_steps
+        for t in range(num_steps): # iterating over the num_steps (Loop over timesteps and assign values properly)
             with torch.no_grad():
                 action, logprob, _, value = policy.action_value(obs)
             # Adding the transition info
@@ -151,7 +151,7 @@ def train(
             logprobs[t] = logprob
             values[t] = value
 
-            obs_np = action.cpu().numpy() # moving to cpu to take the step
+            obs_np = action.cpu().numpy() # moving to cpu to take the step in env
             obs_next, reward, done, _, _ = env.step(obs_np)
 
             obs = torch.from_numpy(obs_next).float().to(device) #moving back to gpu for calcs
