@@ -89,6 +89,9 @@ class ContinuousActorCritic(nn.Module):
         # Hint: Use the Normal distribution, and have 
         # a single logstd parameter for each action dim irrespective of state
 
+        self.state_dim = state_dim
+        self.action_dim = action_dim
+
         #parameter
         self.log_std = nn.Parameter(torch.full((action_dim,), -0.5))
 
@@ -148,30 +151,4 @@ class ContinuousActorCritic(nn.Module):
     @torch.no_grad
     def value(self, state):
         return self.value_network(state).squeeze(-1)
-    
-
-
-
-
-class ContinuousActorCritic(nn.Module):
-
-    def __init__(self, state_dim, action_dim):
-        super().__init__()
-        # Hint: Use the Normal distribution, and have 
-        # a single logstd parameter for each action dim irrespective of state
-        pass
-
-    def action_value(self, state, action=None):
-        """
-        Returns actions, log probability of the actions, the entropy of the distribution and the value at the states
-
-        :param state: The state
-        :param action: If action is None then the action is randomly sampled from the policy distribution. 
-                       Otherwise, the log probs are computed from the given action. 
-        """ 
-        pass
-    
-    @torch.no_grad
-    def value(self, state):
-        pass
     
