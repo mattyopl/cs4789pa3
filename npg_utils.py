@@ -94,7 +94,7 @@ def compute_fisher_matrix(grads, lamb=1e-3):
 
         for grad in trajectory:
             V += grad @ grad.T
-        F+=V/(H)
+        F+=V/H
 
 
     F /= N  # average over all time steps
