@@ -77,9 +77,9 @@ class ActorCritic(nn.Module):
         """
         Returns the value of the state
 
-        :param state: 
+        :pa
+        ram state: 
         """
-        print(state)
         return self.value_network(state).squeeze(-1)
 
 class ContinuousActorCritic(nn.Module):
