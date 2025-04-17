@@ -19,7 +19,7 @@ class ActorCritic(nn.Module):
         self.state_dim = state_dim
         self.action_dim = action_dim
 
-        #action network
+        #policy network
         layers = []
         hiddens = [256, 128]
         layers.append(nn.Linear(state_dim, hiddens[0]))
@@ -37,8 +37,8 @@ class ActorCritic(nn.Module):
 
         #value network
         value_layers = []
-        value_layers.append(nn.Linear(state_dim, hiddens_value[0]))
         hiddens_value = [512, 128, 32]
+        value_layers.append(nn.Linear(state_dim, hiddens_value[0]))
         for i in range(1, len(hiddens_value)):
             value_layers.append(nn.ReLU())
             value_layers.append(nn.Linear(hiddens_value[i - 1], hiddens_value[i]))
@@ -56,12 +56,17 @@ class ActorCritic(nn.Module):
                        Otherwise, the log probs are computed from the given action. 
         """ 
         # Hint: Use the Categorical distribution
-        if action == None:
-            action_prob_dist = self.policy_network(state)
-            dist = Categorical(action_prob_dist)
-            dist.sample()
+        logits = self.policy_network(state)
+        dist = Categorical(logits=logits)
+        value = self.value(state)
+        if action is None:
+            action = dist.sample()
 
-        return action, dist.log_prob(state), dist.entropy(), self.value(state)
+        log_prob = dist.log_prob(action)
+        entropy = dist.entropy()
+
+
+        return action, log_prob, entropy, value
 
         
     
@@ -79,7 +84,7 @@ class ContinuousActorCritic(nn.Module):
     def __init__(self, state_dim, action_dim):
         super().__init__()
         # Hint: Use the Normal distribution, and have 
-        # a single logstd paramater for each action dim irrespective of state
+        # a single logstd parameter for each action dim irrespective of state
 
         #parameter
         self.log_std = nn.Parameter(torch.full((action_dim,), -0.5))
@@ -123,11 +128,45 @@ class ContinuousActorCritic(nn.Module):
         """ 
         mean = self.mean_network(state)
         std = torch.exp(self.log_std)
-        distribution = Normal(mean, std)
-        return distribution.sample(), distribution.log_prob(state), distribution.entropy(), self.value(state)
+        dist = Normal(mean, std)
+
+        if action is None:
+                action = dist.sample()
+
+        log_prob = dist.log_prob(action)
+        entropy = dist.entropy()
+        value = self.value(state)
+
+        return action, log_prob, entropy, value
 
     
     @torch.no_grad
     def value(self, state):
         return self.value_network(state)
+    
+
+
+
+
+class ContinuousActorCritic(nn.Module):
+
+    def __init__(self, state_dim, action_dim):
+        super().__init__()
+        # Hint: Use the Normal distribution, and have 
+        # a single logstd parameter for each action dim irrespective of state
+        pass
+
+    def action_value(self, state, action=None):
+        """
+        Returns actions, log probability of the actions, the entropy of the distribution and the value at the states
+
+        :param state: The state
+        :param action: If action is None then the action is randomly sampled from the policy distribution. 
+                       Otherwise, the log probs are computed from the given action. 
+        """ 
+        pass
+    
+    @torch.no_grad
+    def value(self, state):
+        pass
     
