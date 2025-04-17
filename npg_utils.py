@@ -63,10 +63,10 @@ def compute_log_softmax_grad(theta, phis, action_idx):
     """
 
     # TODO
-    logits = np.dot(theta.T, phis)  # shape: (1 x |A|)
-    softmax_probs = compute_softmax(logits, axis=1)  # shape: (1 x |A|)
+    logits = np.dot(theta.T, phis)
+    softmax_probs = compute_softmax(logits, axis=1)
 
-    weighted_phi = np.dot(phis, softmax_probs.T)  # shape: (d x 1)
+    weighted_phi = np.dot(phis, softmax_probs.T)
     grad = phis[:, action_idx:action_idx+1] - weighted_phi  # shape: (d x 1)
 
     return grad
@@ -84,9 +84,9 @@ def compute_fisher_matrix(grads, lamb=1e-3):
     """
 
     # TODO
-    d = grads[0][0].shape[0]  # dimensionality of theta
+    d = grads[0][0].shape[0] 
     F = np.zeros((d, d))
-    N = len(grads)  # total number of trajectories steps
+    N = len(grads) 
     
     for trajectory in grads:
         V = np.zeros((d,d))
@@ -98,7 +98,7 @@ def compute_fisher_matrix(grads, lamb=1e-3):
 
 
     F /= N  # average over all time steps
-    F += lamb * np.eye(d)  # add regularization
+    F += lamb * np.eye(d) 
 
     return F
 
