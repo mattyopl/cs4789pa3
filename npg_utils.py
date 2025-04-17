@@ -32,7 +32,10 @@ def compute_softmax(logits, axis):
     """
 
     # TODO
-    pass
+    shifted_logits = logits - np.max(logits, axis=axis, keepdims=True)
+    exp_logits = np.exp(shifted_logits)
+    softmax = exp_logits / np.sum(exp_logits, axis=axis, keepdims=True)
+    return softmax
 
 
 def compute_action_distribution(theta, phis):
@@ -44,7 +47,10 @@ def compute_action_distribution(theta, phis):
     """
 
     # TODO
-    pass
+    # Want to dot shapes of theta and phis and take soft max
+    logits = np.dot(theta.T, phis)  # shape: (1 x |A|)
+    action_probs = compute_softmax(logits, axis=1)
+    return action_probs
 
 
 def compute_log_softmax_grad(theta, phis, action_idx):
@@ -57,7 +63,13 @@ def compute_log_softmax_grad(theta, phis, action_idx):
     """
 
     # TODO
-    pass
+    logits = np.dot(theta.T, phis)  # shape: (1 x |A|)
+    softmax_probs = compute_softmax(logits, axis=1)  # shape: (1 x |A|)
+
+    weighted_phi = np.dot(phis, softmax_probs.T)  # shape: (d x 1)
+    grad = phis[:, action_idx:action_idx+1] - weighted_phi  # shape: (d x 1)
+
+    return grad
 
 
 def compute_fisher_matrix(grads, lamb=1e-3):
