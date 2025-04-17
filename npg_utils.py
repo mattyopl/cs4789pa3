@@ -150,8 +150,16 @@ def compute_eta(delta, fisher, v_grad):
     """
 
     # TODO
-    eta = np.sqrt(delta/(v_grad.T@np.linalg.inv(fisher)@v_grad + 1e-6))
+    num = delta
+    f_inv = np.linalg.inv(fisher)
+    denom = float(v_grad.T @ f_inv @ v_grad) + 1e-6
+
+    if denom <= 0:
+        return 0.0
+
+    eta = np.sqrt(num / denom)
     return eta
+
 
 
 def get_args():
