@@ -26,7 +26,19 @@ def sample(theta, env, N):
         observation = env.reset(seed=np.random.randint(2**31))[0]
         for t in range(200):
             # TODO Extract features, get trajectory_grads and get trajectory_rewards
-            pass
+            phis = npg_utils.extract_features(observation, 2)
+            action_probs = npg_utils.compute_action_distribution(theta, phis).flatten()
+            
+            action = np.random.choice(2, p=action_probs)
+            grad = npg_utils.compute_log_softmax_grad(theta, phis, action)
+
+
+            observation, reward, terminated, truncated, info = env.step(action)
+
+            trajectory_rewards.append(reward)
+            trajectory_grads.append(grad)
+            if(terminated):
+                break
 
         total_rewards.append(trajectory_rewards)
         total_grads.append(trajectory_grads)

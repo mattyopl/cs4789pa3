@@ -84,7 +84,25 @@ def compute_fisher_matrix(grads, lamb=1e-3):
     """
 
     # TODO
-    pass
+    d = grads[0][0].shape[0]  # dimensionality of theta
+    F = np.zeros((d, d))
+    N = 0  # total number of gradient steps
+    
+    for trajectory in grads:
+        h = 0
+        V = np.zeros((d,d))
+        N += 1
+
+        for grad in trajectory:
+            V += grad @ grad.T
+            h+=1
+        F+=V/(h+1)
+
+
+    F /= N  # average over all time steps
+    F += lamb * np.eye(d)  # add regularization
+
+    return F
 
 
 def compute_value_gradient(grads, rewards):
