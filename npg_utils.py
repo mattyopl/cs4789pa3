@@ -150,8 +150,8 @@ def compute_eta(delta, fisher, v_grad):
     """
 
     # TODO
-    pass
-
+    eta = np.sqrt(delta/(v_grad.T@np.linalg.inv(fisher)@v_grad + 1e-6))
+    return eta
 
 
 def get_args():
