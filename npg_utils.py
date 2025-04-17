@@ -112,7 +112,31 @@ def compute_value_gradient(grads, rewards):
     """
 
     # TODO
-    pass
+    N = len(grads) 
+    d = grads[0][0].shape[0] 
+    V = np.zeros((d, 1)) 
+
+    total_returns = [sum(rewards[i]) for i in range(N)]
+    b = sum(total_returns) / N
+
+    for i in range(N):
+        trajectory_grads = grads[i]
+        trajectory_rewards = rewards[i]
+        T = len(trajectory_grads)
+
+        sub_reward_sum = 0
+        trajectory_sum = np.zeros((d, 1))
+        
+        for t in range(T):
+            sub_reward_sum = sum(trajectory_rewards[t:])
+            trajectory_sum += trajectory_grads[t] * (sub_reward_sum - b)
+
+        trajectory_sum /= T
+        V += trajectory_sum
+
+    V /= N
+    return V
+
 
 
 
