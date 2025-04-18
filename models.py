@@ -97,30 +97,26 @@ class ContinuousActorCritic(nn.Module):
 
         #mean network
         layers = []
-        hiddens = [512, 128, 32]
+        hiddens =  [256, 64, action_dim]
         layers.append(nn.Linear(state_dim, hiddens[0]))
 
         for i in range(1, len(hiddens)):
             layers.append(nn.ReLU())
             layers.append(nn.Linear(hiddens[i - 1], hiddens[i]))
 
-        layers.append(nn.ReLU())
-        layers.append(nn.Linear(hiddens[-1], 1))
         for layer in layers:
             layer_init(layer)
 
         self.mean_network = nn.Sequential(*layers)
 
         #value network
-
         value_layers = []
-        hiddens_value = [512, 128, 32, 1]
+        hiddens_value = [256, 64, 1]
         value_layers.append(nn.Linear(state_dim, hiddens_value[0]))
         for i in range(1, len(hiddens_value)):
             value_layers.append(nn.ReLU())
             value_layers.append(nn.Linear(hiddens_value[i - 1], hiddens_value[i]))
-        value_layers.append(nn.ReLU())
-        value_layers.append(nn.Linear(hiddens_value[-1], 1))
+
         for layer in value_layers:
             layer_init(layer)
         
@@ -135,8 +131,9 @@ class ContinuousActorCritic(nn.Module):
                        Otherwise, the log probs are computed from the given action. 
         """ 
         mean = self.mean_network(state)
-        std = torch.exp(self.log_std)
-        dist = Normal(mean, std)
+        std = torch.exp(self.log_std).expand_as(mean)
+        dist = torch.distributions.Independent(Normal(mean, std), 1)
+
 
         if action is None:
                 action = dist.sample()

@@ -1,6 +1,9 @@
 from argparse import ArgumentParser
+import datetime
+import os
 import random
 import gymnasium as gym
+from matplotlib import pyplot as plt
 import numpy as np
 import torch
 import torch.nn as nn
@@ -139,6 +142,7 @@ def train(
     obs_shape = env.single_observation_space.shape
     act_shape = env.single_action_space.shape if not isinstance(env.single_action_space, gym.spaces.Discrete) else ()
 
+    plot_logging = [] #list of (iteration, reward) tuples
 
     for iteration in tqdm(range(1, epochs + 1)):
         # TODO: Collect num_steps transitions from env and fill in the tensors for states, actions, ....
@@ -217,13 +221,32 @@ def train(
         # Clip the gradient
         nn.utils.clip_grad_norm_(policy.parameters(), max_grad_norm)
         # Uncomment for eval/checkpoint
-        # if iteration % 10 == 0: 
-        #     print(f"Eval Reward {iteration}:", (val(policy, eval_env)))
-        #     if checkpoint:
-        #         torch.save(policy, f"learned_policies/{env_id}/model_{iteration}.pt")
+        plot_logging.append((iteration, val(policy, eval_env)))
+        if iteration % 10 == 0: 
+            print(f"Eval Reward {iteration}:", (val(policy, eval_env)))
+            if checkpoint:
+                torch.save(policy, f"learned_policies/{env_id}/model_{iteration}.pt")
         
     
+    # Saving the plot and displaying the plot
+    generatePlot(plot_logging)
+
     return policy
+
+def generatePlot(plot_logging):
+    x_vals, y_vals = zip(*plot_logging)
+    print(x_vals, y_vals)
+    ppo_plots = 'plots/PPO'
+    os.makedirs(ppo_plots, exist_ok=True)
+
+    plt.plot(x_vals, y_vals)
+    plt.title("PPO (Reacher-v4): avg rewards per epoch")
+    plt.xlabel("epoch")
+    plt.ylabel("avg rewards")
+    os.makedirs(ppo_plots, exist_ok=True)
+    plt.savefig(os.path.join(ppo_plots, "rewards"))
+    plt.show()
+
 
 
 def val(model, env, num_ep=100):

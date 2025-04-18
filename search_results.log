@@ -1,0 +1,84 @@
+--- 2025-04-17 18:19:41.702873 ---
+Config: {'minibatch_size': 32, 'num_steps': 256, 'epochs': 50, 'gae_lambda': 0.9}
+Output:
+Achieved reward -92.99108498317614
+
+
+--- 2025-04-17 18:21:00.743882 ---
+Config: {'minibatch_size': 32, 'num_steps': 256, 'epochs': 50, 'gae_lambda': 0.92}
+Output:
+Achieved reward -84.47063452654356
+
+
+--- 2025-04-17 18:22:10.242604 ---
+Config: {'minibatch_size': 32, 'num_steps': 256, 'epochs': 50, 'gae_lambda': 0.95}
+Output:
+Achieved reward -106.74718968308372
+
+
+--- 2025-04-17 18:23:18.318130 ---
+Config: {'minibatch_size': 32, 'num_steps': 256, 'epochs': 50, 'gae_lambda': 0.97}
+Output:
+Achieved reward -95.4657906651505
+
+
+--- 2025-04-17 18:24:24.451900 ---
+Config: {'minibatch_size': 32, 'num_steps': 256, 'epochs': 50, 'gae_lambda': 0.99}
+Output:
+Achieved reward -99.0344469092069
+
+
+--- 2025-04-17 18:26:40.522136 ---
+Config: {'minibatch_size': 32, 'num_steps': 256, 'epochs': 100, 'gae_lambda': 0.9}
+Output:
+Achieved reward -107.25722163581979
+
+
+--- 2025-04-17 18:28:44.499510 ---
+Config: {'minibatch_size': 32, 'num_steps': 256, 'epochs': 100, 'gae_lambda': 0.92}
+Output:
+Achieved reward -106.44369004653623
+
+
+--- 2025-04-17 18:31:00.690895 ---
+Config: {'minibatch_size': 32, 'num_steps': 256, 'epochs': 100, 'gae_lambda': 0.95}
+Output:
+Achieved reward -108.15859989641318
+
+
+--- 2025-04-17 18:33:10.837422 ---
+Config: {'minibatch_size': 32, 'num_steps': 256, 'epochs': 100, 'gae_lambda': 0.97}
+Output:
+Achieved reward -107.83967355696022
+
+
+--- 2025-04-17 18:35:21.346213 ---
+Config: {'minibatch_size': 32, 'num_steps': 256, 'epochs': 100, 'gae_lambda': 0.99}
+Output:
+Achieved reward -108.56462130736257
+
+
+--- 2025-04-17 18:41:40.411647 ---
+Config: {'minibatch_size': 32, 'num_steps': 256, 'epochs': 300, 'gae_lambda': 0.9}
+Output:
+Achieved reward -108.7074398638594
+
+
+--- 2025-04-17 18:47:09.752842 ---
+Config: {'minibatch_size': 32, 'num_steps': 256, 'epochs': 300, 'gae_lambda': 0.92}
+Output:
+Achieved reward -108.5384297250917
+
+
+--- 2025-04-17 18:53:06.486937 ---
+Config: {'minibatch_size': 32, 'num_steps': 256, 'epochs': 300, 'gae_lambda': 0.95}
+Output:
+Achieved reward -108.47937947820546
+
+
+--- 2025-04-17 18:58:44.419066 ---
+Config: {'minibatch_size': 32, 'num_steps': 256, 'epochs': 300, 'gae_lambda': 0.97}
+Output:
+Achieved reward -108.76036403958375
+
+
